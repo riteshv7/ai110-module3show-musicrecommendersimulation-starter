@@ -17,17 +17,43 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Real platforms like Spotify and YouTube combine two ideas. Collaborative
+filtering recommends songs based on what similar users liked, skipped, or
+added to playlists. Content-based filtering recommends songs whose attributes
+(genre, mood, energy, tempo) match what a user already likes. My version uses
+only content-based filtering. It scores every song in the catalog against a
+user's taste profile and ranks the highest scores first. It prioritizes genre
+first, then mood, then how close a song's energy is to the user's target.
 
-Some prompts to answer:
+**Song features:** genre, mood, energy, tempo_bpm, valence, danceability, acousticness
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+**UserProfile features:** favorite_genre, favorite_mood, target_energy
 
-You can include a simple diagram or bullet list if helpful.
+### User Profile
+```python
+user_prefs = {
+    "favorite_genre": "pop",
+    "favorite_mood": "happy",
+    "target_energy": 0.8,
+}
+```
+
+### Algorithm Recipe
+- +2.0 points for a genre match
+- +1.0 point for a mood match
+- Up to +1.0 point for energy closeness: 1 - abs(song_energy - target_energy)
+- Maximum score: 4.0
+
+### Expected Bias
+This system may over-prioritize genre. A great song that matches the
+user's mood and energy but has a different genre can't beat a genre match
+with a poor mood fit. With only 18 songs, some genres have just one song,
+so users who like those genres get very little variety.
+
+AI critique of my profile: a pop/happy/0.8 profile mostly tests energy,
+since rock and lofi songs match neither genre nor mood. I will test extra
+profiles (rock/intense/0.9 and lofi/chill/0.35) in Phase 4 to check that
+the system can tell them apart.
 
 ---
 
