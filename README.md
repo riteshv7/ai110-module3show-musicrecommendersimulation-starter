@@ -181,11 +181,13 @@ Profile: {'favorite_genre': 'folk', 'favorite_mood': 'sad', 'target_energy': 0.9
 
 ## Experiments You Tried
 
-*(TODO: run one experiment, then describe it here.)*
+**Weight shift: genre 2.0 → 1.0, energy 1.0 → 2.0 (max score still 4.0).**
 
-- Experiment chosen: (weight shift: double energy and halve genre, OR remove the mood check)
-- What changed in the rankings:
-- Did it make the results more accurate, or just different?
+- **Pop, Lofi, Rock profiles:** the same songs stayed on top. Matching songs were already strong on energy too, so the top results did not change. Gaps between songs got smaller (e.g. Gym Hero for the rock profile went from 1.99 to 2.98, closer to Storm Runner at 3.98).
+- **Conflicted profile (folk, sad, energy 0.9):** this changed the most. Before, Hollow Pines (folk, energy 0.30) ranked first with 2.40 just for matching the genre. After the shift it dropped out of the top 5, and high-energy songs like Storm Runner took over.
+- **More accurate or just different?** More accurate for the conflicted profile, because the results now fit the energy the user asked for. But all five results match only on energy, so the system now ignores genre and mood for this user. Weight shifts trade one bias for another.
+
+Final weights kept in the code: (state which one you left in, see below).
 
 ---
 
